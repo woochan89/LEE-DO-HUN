@@ -1,0 +1,8 @@
+﻿  GameSystem.cpp
+c:\users\study04\source\repos\project16-3\project16-3\block.h(32): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\study04\source\repos\project16-3\project16-3\gamesystem.cpp(23): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\study04\source\repos\project16-3\project16-3\gamesystem.cpp(25): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\study04\source\repos\project16-3\project16-3\gamesystem.cpp(27): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\study04\source\repos\project16-3\project16-3\gamesystem.cpp(29): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\study04\source\repos\project16-3\project16-3\gamesystem.cpp(33): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project16-3.vcxproj -> C:\Users\study04\source\repos\Project16-3\Debug\Project16-3.exe
