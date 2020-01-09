@@ -1,6 +1,7 @@
 #pragma once
 #include "Snake.h"
 
+#define SPACE_BAR 32
 
 class GameSystem
 {
@@ -19,6 +20,7 @@ public:
 	bool Crash_Square();
 	bool Eat_Heart();
 	bool Crash_Wall();
+	void Game_Over();
 	GameSystem();
 	~GameSystem();
 

@@ -2,22 +2,37 @@
 
 int Snake::key = 0;
 int Snake::direct = 0;
+int Snake::m_iSpeed = 300;
 
 Snake::Snake()
 {
 	m_pHead = NULL; // 쓰는것만 널값으로 초기화
 }
 
+void Snake::Release(Snakes* Node) // 이거복습
+{
+	if (Node == NULL)
+	{
+		return;
+	}
+	else
+	{
+		Release(Node->m_pNext);
+		delete Node;
+		Node = NULL;
+	}
+}
+
 void Snake::Create_Head()
 {
 	if (m_pHead != NULL)
 	{
-		//뱀 전체 삭제코드
+		Release(m_pHead); //뱀 전체 삭제코드
 	}
 
 	m_pHead = new Snakes;
-	m_pHead->m_MyPositiion.m_ix = 50;// define or enum 정의
-	m_pHead->m_MyPositiion.m_iy = 15;
+	m_pHead->m_MyPositiion.m_ix = SNAKE_START_X;
+	m_pHead->m_MyPositiion.m_iy = SNAKE_START_Y;
 	m_pHead->m_LastPositiion.m_ix = 0;
 	m_pHead->m_LastPositiion.m_iy = 0;
 	m_pHead->m_pNext = NULL;
@@ -29,7 +44,6 @@ void Snake::Create_Head()
 void Snake::Create_Tail()
 {
 	m_pTmp = m_pHead; // 같은주소값을 가진다, 같은주소값을 가진상태일경우 값이 바뀌면 같이바뀐다.
-
 
 	while (m_pTmp->m_pNext != NULL)
 	{
@@ -44,6 +58,11 @@ void Snake::Create_Tail()
 	m_pTail->m_pNext = NULL;
 	m_pTmp->m_pNext = m_pTail;
 
+	if (m_iSpeed > 20)
+	{
+		m_iSpeed -= 20;
+	}
+
 	Block::gotoxy(m_pTail->m_MyPositiion.m_ix, m_pTail->m_MyPositiion.m_iy);
 	cout << SNAKE_TAIL;
 }
@@ -54,7 +73,12 @@ void Snake::Snake_Tail_Move()
 
 	while (m_pHead->m_pNext != NULL)
 	{
-		m_pMovetmp = m_pMovetmp2->m_pNext; // 첫번째 꼬리로 정의
+		m_pMovetmp = m_pMovetmp2->m_pNext; // 처음 tmp는 머리인데 첫번째 꼬리로 정의
+
+		if (m_pMovetmp == NULL)
+		{
+			break;
+		}
 
 		m_pMovetmp->m_LastPositiion.m_ix = m_pMovetmp->m_MyPositiion.m_ix;
 		m_pMovetmp->m_LastPositiion.m_iy = m_pMovetmp->m_MyPositiion.m_iy;
@@ -67,12 +91,33 @@ void Snake::Snake_Tail_Move()
 		Block::gotoxy(m_pMovetmp->m_MyPositiion.m_ix, m_pMovetmp->m_MyPositiion.m_iy);
 		cout << SNAKE_TAIL;
 
-		m_pMovetmp2 = m_pMovetmp2->m_pNext; // 두번째 꼬리
+		m_pMovetmp2 = m_pMovetmp; // 다음 꼬리로 넘어가기위해서 씀
+	}
+}
+
+bool Snake::Snake_Crash()
+{
+	m_pCrashtmp2 = m_pHead;
+	while (m_pHead->m_pNext != NULL)
+	{
+		m_pCrashtmp = m_pCrashtmp2->m_pNext; // 첫꼬리로 설정
+
+		if (m_pCrashtmp == NULL)
+		{
+			break;
+		}
+
+		if ((m_pHead->m_MyPositiion.m_ix == m_pCrashtmp->m_MyPositiion.m_ix) && (m_pHead->m_MyPositiion.m_iy == m_pCrashtmp->m_MyPositiion.m_iy))
+		{
+			return true;
+		}
+		else
+		{
+			m_pCrashtmp2 = m_pCrashtmp;
+		}
 	}
 
-	//// 첫번째 꼬리까지는 머리를 따라 잘움직이는데
-	//// 두번째꼬리부터 제대로 동작하지않아 계속 코드를 짜고 고쳤으나 잘안됩니다
-	//// 자꾸 얽히다보니 꼬였는데 어느부분을 건드려야 두번째 세번째 꼬리도 쭉 따라올지 궁금합니다
+	return false;
 }
 
 void Snake::Snake_Direct(int dir)
@@ -103,8 +148,13 @@ void Snake::Snake_Move_Tmp()
 
 void Snake::Snake_Move()
 {
-	Sleep(300);
+	Sleep(m_iSpeed);
 	Snake_Move_Tmp();
+	if (m_pHead->m_pNext != NULL) // 머리와 꼬리의 충돌체크
+	{
+		Snake_Crash();
+	}
+
 
 	if (_kbhit())
 	{
@@ -163,7 +213,7 @@ void Snake::Snake_Move()
 
 	Snake_Show();
 
-	if (m_pHead->m_pNext != NULL)
+	if (m_pHead->m_pNext != NULL) // 꼬리의 이동
 	{
 		Snake_Tail_Move();
 	}
@@ -179,4 +229,15 @@ void Snake::Snake_Show()
 
 Snake::~Snake()
 {
+	m_pTmp = m_pHead;
+	if (m_pTmp == NULL) // 동적할당해제
+	{
+		return;
+	}
+	else
+	{
+		Release(m_pTmp->m_pNext);
+		delete m_pTmp;
+		m_pTmp = NULL;
+	}
 }

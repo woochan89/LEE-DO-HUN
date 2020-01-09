@@ -4,6 +4,9 @@
 #define SNAKE_HEAD "¢Á"
 #define SNAKE_TAIL "¡Û"
 
+#define SNAKE_START_X 50
+#define SNAKE_START_Y 15
+
 enum GAME_KEY
 {
 	UP = 'w',
@@ -29,9 +32,11 @@ class Snake
 {
 private:
 	Snakes *m_pHead, *m_pTail, *m_pTmp, *m_pMovetmp, *m_pMovetmp2;
+	Snakes *m_pCrashtmp, *m_pCrashtmp2;
 public:
 	static int direct;
 	static int key;
+	static int m_iSpeed;
 	void Snake_Move();
 	void Snake_Move_Tmp();
 	void Snake_Show();
@@ -39,6 +44,8 @@ public:
 	void Create_Head();
 	void Create_Tail();
 	void Snake_Tail_Move();
+	bool Snake_Crash();
+	void Release(Snakes* Node);
 
 	inline int Get_m_MyPositiion_x()
 	{

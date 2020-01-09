@@ -33,7 +33,6 @@ void GameSystem::Game_Start()
 		}
 		Snake_Control();
 	}
-	_getch();
 }
 
 void GameSystem::Snake_Control()
@@ -43,12 +42,14 @@ void GameSystem::Snake_Control()
 	if (Crash_Square() == true)
 	{
 		m_igame_state = FALSE;
-		cout << "충돌했다";
 	}
 	if (Crash_Wall() == true)
 	{
 		m_igame_state = FALSE;
-		cout << "충돌했다";
+	}
+	if (Draw_Snake.Snake_Crash() == true)
+	{
+		m_igame_state = FALSE;
 	}
 	if (Eat_Heart() == true)
 	{
@@ -86,36 +87,74 @@ bool GameSystem::Eat_Heart()
 	return false;
 }
 
+void GameSystem::Game_Over()
+{
+	int trigger = FALSE;
+
+	system("cls");
+	Draw_Block.Map_Block_Draw();
+	Block::gotoxy(m_iwidth, m_iheight + 2);
+	cout << "Score : " << m_iscore;
+	Block::gotoxy(m_iwidth * 0.75, m_iheight * 0.45);
+	cout << "☆ ● ☆ 게임 오버 ☆ ● ☆";
+	Block::gotoxy(m_iwidth * 0.68, m_iheight * 0.55);
+	cout << "계속하려면 스페이스바를 눌러주세요";
+	
+	while (trigger == FALSE)
+	{
+		char ch = _getch();
+		if (ch == SPACE_BAR)
+		{
+			trigger = TRUE;
+			m_igame_state = TRUE;
+		}
+	}
+
+}
+
 void GameSystem::Menu()
 {
 	int select = 0;
 
-	Block::gotoxy(m_iwidth * 0.75, m_iheight * 0.25);
-	cout << "☆ ● ☆ 뱀 게임 ☆ ● ☆";
-	Block::gotoxy(m_iwidth * 0.88, m_iheight * 0.35);
-	cout << "1.게임 시작";
-	Block::gotoxy(m_iwidth * 0.88, m_iheight * 0.45);
-	cout << "2.게임 종료";
-	Block::gotoxy(m_iwidth * 0.94, m_iheight * 0.55);
-	cout << "선택 : ";
-	Block::gotoxy(m_iwidth, m_iheight + 2);
-	cout << "Score : " << m_iscore;
-	Block::gotoxy(m_iwidth * 1.1, m_iheight * 0.55);
-	cin >> select;
-	switch (select)
+	while (1)
 	{
-	case 1:
-		Game_Start();
-		break;
-	case 2:
-		return;
+		system("cls");
+		Draw_Block.Map_Block_Draw();
+		Block::gotoxy(m_iwidth * 0.75, m_iheight * 0.25);
+		cout << "☆ ● ☆ 뱀 게임 ☆ ● ☆";
+		Block::gotoxy(m_iwidth * 0.88, m_iheight * 0.35);
+		cout << "1.게임 시작";
+		Block::gotoxy(m_iwidth * 0.88, m_iheight * 0.45);
+		cout << "2.게임 종료";
+		Block::gotoxy(m_iwidth * 0.94, m_iheight * 0.55);
+		cout << "선택 : ";
+		Block::gotoxy(m_iwidth, m_iheight + 2);
+		cout << "Score : " << m_iscore;
+		Block::gotoxy(m_iwidth * 1.1, m_iheight * 0.55);
+		cin >> select;
+		switch (select)
+		{
+		case 1:
+			Game_Start();
+			break;
+		case 2:
+			return;
+		}
+
+		if (m_igame_state == FALSE)
+		{
+			m_iscore = 0;  // 점수, 스피드, 방향 초기화
+			Snake::m_iSpeed = 300;
+			Snake::direct = NULL;
+			Game_Over();
+		}
 	}
+
 }
 
 void GameSystem::Init()
 {
 	Draw_Block.Map_Block();
-	Draw_Block.Map_Block_Draw();
 	Menu();
 }
 

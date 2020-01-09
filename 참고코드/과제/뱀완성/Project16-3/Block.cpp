@@ -117,6 +117,8 @@ bool Block::Count_Heart_Block(int x, int y)
 		}
 		if (x == Heart[i].m_ix && y == Heart[i].m_iy)
 		{
+			Heart[i].m_ix = NULL;
+			Heart[i].m_iy = NULL;
 			return true;
 		}
 	}
@@ -152,7 +154,7 @@ void Block::Square_Block()
 		Square[count].m_iy = (rand() % RANDOM_Y);
 		Square[count].m_ix = (rand() % RANDOM_X);
 		Square[count].m_ishape = SHAPE_SUARE;
-		if ((Square[count].m_iy % 1 == 0 && Square[count].m_ix % 2 == 0) && (Heart[count].m_ix != 50 && Heart[count].m_iy != 15)) //애초에 이걸추가했으면 밑에 if문 필요없을수도?
+		if ((Square[count].m_iy % 1 == 0 && Square[count].m_ix % 2 == 0) && (Square[count].m_ix != 50 && Square[count].m_iy != 15)) //애초에 이걸추가했으면 밑에 if문 필요없을수도?
 		{
 			if (Square[count].m_ix != Wall[count].m_ix && Square[count].m_iy != Wall[count].m_iy)
 			{
