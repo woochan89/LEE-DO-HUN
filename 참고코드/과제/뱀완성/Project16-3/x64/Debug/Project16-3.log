@@ -1,3 +1,10 @@
-﻿  Snake.cpp
-c:\users\l\desktop\뱀\project16-3\block.h(49): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-  Project16-3.vcxproj -> C:\Users\L\Desktop\뱀\x64\Debug\Project16-3.exe
+﻿  GameSystem.cpp
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\block.h(49): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(98): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(100): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(123): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(125): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(127): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(129): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\뱀완성\project16-3\gamesystem.cpp(133): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project16-3.vcxproj -> C:\Users\A09\Desktop\LEE-DO-HUN\참고코드\과제\뱀완성\x64\Debug\Project16-3.exe
