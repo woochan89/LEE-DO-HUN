@@ -1,0 +1,6 @@
+﻿  Main.cpp
+c:\users\a09\source\repos\project3\project3\main.cpp(6): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+  Person.cpp
+  Student.cpp
+  코드를 생성하고 있습니다...
+  Project3.vcxproj -> C:\Users\A09\source\repos\Project3\Debug\Project3.exe

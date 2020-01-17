@@ -1,2 +1,7 @@
 ﻿  Computer.cpp
-  Project2.vcxproj -> C:\Users\L\Desktop\상속문제 login, computerd\x64\Debug\Project2.exe
+  Login.cpp
+  소스.cpp
+c:\users\a09\desktop\lee-do-hun\참고코드\과제\상속완료\project2\소스.cpp(7): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+  코드를 생성하고 있습니다...
+  LINK : C:\Users\A09\Desktop\LEE-DO-HUN\참고코드\과제\상속완료\x64\Debug\Project2.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  Project2.vcxproj -> C:\Users\A09\Desktop\LEE-DO-HUN\참고코드\과제\상속완료\x64\Debug\Project2.exe
