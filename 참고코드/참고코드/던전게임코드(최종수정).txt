@@ -1,0 +1,413 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 10
+#define TRUE 1
+#define PLAYERINDEX 0
+#define ROCK 1
+#define PAPER 2
+#define CUT 0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+typedef struct Character {
+	char Name[50]; //이름
+	int Attack; //공격력
+	int HP; //현재 체력
+	int MAX_HP; //최대 체력
+	int EXP; //현재 경험치
+	int MAX_EXP; //최대 경험치
+	int GET_EXP; //죽었을 때 주는 경험치
+	int Level; //레벨
+	int FLAG; //player와 enemy를 구분하는 변수 FLAG 0 이면 enemy 1이면 player 
+}Character;
+int CharacterCount = 0;
+void menu() // 초기 화면 메뉴
+{
+	printf("======DunGeon======\n");
+	printf("	1. 던전 입장 \n");
+	printf("	2. Play 정보 \n");
+	printf("	3. Save \n");
+	printf("	4. Load \n");
+	printf("	5. 종료 \n");
+	printf("=====================\n");
+	printf("입력 : ");
+}
+
+void Now_Player(Character* ch[])
+{
+	system("cls");
+	printf("============%s(%dLv)============\n", ch[PLAYERINDEX]->Name, ch[PLAYERINDEX]->Level); //player
+	printf("공격력 = %d		생명력 = %d/%d\n", ch[PLAYERINDEX]->Attack, ch[PLAYERINDEX]->HP, ch[PLAYERINDEX]->MAX_HP);
+	printf("경험치 = %d/%d	GetEXP = %d\n", ch[PLAYERINDEX]->EXP, ch[PLAYERINDEX]->MAX_EXP, ch[PLAYERINDEX]->GET_EXP);
+	system("pause");
+}
+
+//void Player_Level_Up(Character* ch[]) //rand이용 레벨업시 공격력 0-4, 생명령 0-10 랜덤증가
+//{
+//	int Attack_Random = rand() % 5;
+//	int HP_Randome = rand() % 11;
+//	(ch[PLAYERINDEX]->Level)++;
+//	(ch[PLAYERINDEX]->Attack) += Attack_Random;
+//		(ch[PLAYERINDEX]->HP) += HP_Randome;
+//}
+
+
+//void Monster_Level_up(Character* ch[], int MonsterIndex)
+//{
+//	int Attack_Random = rand() % 5; // 공격력은 0-4
+//	int HP_Randome = rand() % 11; //체력은 0-10
+//	int Return_Exp = (ch[PLAYERINDEX]->EXP);
+//	(ch[MonsterIndex]->Level)++;
+//	(ch[MonsterIndex]->Attack) += Attack_Random;
+//	(ch[MonsterIndex]->HP) += HP_Randome;
+//	(ch[MonsterIndex]->EXP) += Return_Exp;
+//}
+
+
+void gameover()
+{
+	system("cls");
+	printf("=============GAME OVER=============\n");
+	printf("패배하셨습니다.\n");
+	system("pause");
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int MonsterIndex(Character* ch[])
+{
+	int MonsterIndex;//이름 중복 제어
+	printf("======던전 입구======\n");
+	printf("1. 1층 던전 : [%s] \n", ch[1]->Name);
+	printf("2. 2층 던전 : [%s] \n", ch[2]->Name);
+	printf("3. 3층 던전 : [%s]  \n", ch[3]->Name);
+	printf("4. 4층 던전 : [%s]  \n", ch[4]->Name);
+	printf("5. 5층 던전 : [%s]  \n", ch[5]->Name);
+	printf("6. 6층 던전 : [%s]  \n", ch[6]->Name);
+	printf("7. 7층 던전 : [%s]  \n", ch[7]->Name);
+	printf("8. 돌아가기  \n");
+	printf("=====================\n");
+	printf("선택 : ");
+	scanf("%d", &MonsterIndex);
+	//monster select 하는 함수
+
+	return MonsterIndex;
+}
+//6.play는 가위 바위 보 로진행되며 적군은 rand()함수로 가위바위보를 뽑는다.
+//
+void Gameplay(Character* ch[], int MonsterIndex)
+{
+	int Attack_Random = rand() % 5; // 0-4
+	int HP_Random = rand() % 11; //0-10
+	int Return_Exp = (ch[PLAYERINDEX]->EXP);
+	for(int i = 0; ((ch[PLAYERINDEX]->HP != NULL) && (ch[MonsterIndex]->HP) != NULL); i++)
+	{
+		int Select;
+		int M_Rnum = rand() % 3;//player 가위바위보 변수        가위바위보 랜덤 변수는 012중 하나나와야함
+
+		system("cls");
+		printf("============%s(%dLv)============\n", ch[PLAYERINDEX]->Name, ch[PLAYERINDEX]->Level); //player
+		printf("공격력 = %d		생명력 = %d/%d\n", ch[PLAYERINDEX]->Attack, ch[PLAYERINDEX]->HP, ch[PLAYERINDEX]->MAX_HP);
+		printf("경험치 = %d/%d	GetEXP = %d\n", ch[PLAYERINDEX]->EXP, ch[PLAYERINDEX]->MAX_EXP, ch[PLAYERINDEX]->GET_EXP);
+		printf("============%s(%dLv)============\n", ch[MonsterIndex]->Name, ch[MonsterIndex]->Level); //monster
+		printf("공격력 = %d		생명력 = %d/%d\n", ch[MonsterIndex]->Attack, ch[MonsterIndex]->HP, ch[MonsterIndex]->MAX_HP);
+		printf("경험치 = %d/%d	GetEXP = %d\n", ch[MonsterIndex]->EXP, ch[MonsterIndex]->MAX_EXP, ch[MonsterIndex]->GET_EXP);
+		printf("=================================\n");
+		printf("%s 입력\n ", ch[PLAYERINDEX]->Name);
+		printf("가위 : 0, 바위 : 1, 보 : 2 \n");
+		printf("[ 입력 ] : ");
+		scanf("%d", &Select);
+
+		switch(Select)
+		{
+			case CUT: //가위
+				if(M_Rnum == CUT) //가위
+				{
+					printf("%s : 가위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 가위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("비겼습니다 \n");
+					system("pause");
+				}
+				else if(M_Rnum == ROCK) //바위
+				{
+					printf("%s : 가위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 바위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("졌습니다. \n");
+					(ch[PLAYERINDEX]->HP) = (ch[PLAYERINDEX]->MAX_HP) - (ch[MonsterIndex]->Attack); //몬스터가 이길시 hp가 깎여짐
+					if(ch[PLAYERINDEX]->HP <= NULL)
+						gameover();
+					system("pause");
+				}
+				else if(M_Rnum == PAPER) //보
+				{
+					printf("%s : 가위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 보 \n", ch[MonsterIndex]->Name); //monster;
+					printf("이겼습니다 \n");
+					(ch[MonsterIndex]->HP) -= (ch[PLAYERINDEX]->Attack);
+					system("pause");
+				}
+				break;
+			case ROCK: //바위
+				if(M_Rnum == CUT) //가위
+				{
+					printf("%s : 바위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 가위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("이겼습니다 \n");
+					(ch[MonsterIndex]->HP) -= (ch[PLAYERINDEX]->Attack);
+					system("pause");
+				}
+				else if(M_Rnum == ROCK) //바위
+				{
+					printf("%s : 바위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 바위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("비겼습니다. \n");
+					system("pause");
+				}
+				else if(M_Rnum == PAPER) //보
+				{
+					printf("%s : 바위 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 보 \n", ch[MonsterIndex]->Name); //monster;
+					printf("졌습니다 \n");
+					(ch[PLAYERINDEX]->HP) -= (ch[MonsterIndex]->Attack); //몬스터가 이길시 hp가 깎여짐
+					if(ch[PLAYERINDEX]->HP <= NULL)
+						gameover();
+					system("pause");
+				}
+				break;
+			case PAPER: //보
+				if(M_Rnum == CUT) //가위
+				{
+					printf("%s : 보 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 가위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("졌습니다 \n");
+					(ch[PLAYERINDEX]->HP) -= (ch[MonsterIndex]->Attack);
+					if(ch[PLAYERINDEX]->HP <= NULL)
+						gameover();//몬스터가 이길시 hp가 깎여짐
+					system("pause");
+				}
+				else if(M_Rnum == ROCK) //바위
+				{
+					printf("%s : 보 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 바위 \n", ch[MonsterIndex]->Name); //monster;
+					printf("이겼습니다. \n");
+					(ch[MonsterIndex]->HP) -= (ch[PLAYERINDEX]->Attack);
+					system("pause");
+				}
+				else if(M_Rnum == PAPER) //보
+				{
+					printf("%s : 보 \n", ch[PLAYERINDEX]->Name); //player;
+					printf("%s : 보 \n", ch[MonsterIndex]->Name); //monster;
+					printf("비겼습니다 \n");
+					system("pause");
+				}
+				break;
+			default:
+				printf("오류! 다시입력해주세요 \n");
+				system("pause");
+				break;
+		}
+		if((ch[MonsterIndex]->HP) <= 0)
+		{
+			system("cls");
+			printf("WIN!\n");
+			ch[PLAYERINDEX]->EXP += ch[MonsterIndex]->GET_EXP;
+			printf("싸움 승리로 경험치 %d를 얻었습니다.!\n", ch[MonsterIndex]->GET_EXP);
+			system("pause");
+		}
+
+		else if(ch[PLAYERINDEX]->HP <= 0)
+		{
+			ch[PLAYERINDEX]->HP = 0;
+			gameover();
+		}
+	}
+
+	if((ch[PLAYERINDEX]->EXP) >= (ch[PLAYERINDEX]->MAX_EXP))
+	{
+
+		++(ch[PLAYERINDEX]->Level);
+		(ch[PLAYERINDEX]->Attack) += Attack_Random;
+		(ch[PLAYERINDEX]->MAX_HP) += HP_Random;
+		(ch[PLAYERINDEX]->EXP) = 0;
+	}
+	else if((ch[MonsterIndex]->EXP) >= (ch[MonsterIndex]->MAX_EXP))
+	{
+		++(ch[MonsterIndex]->Level);
+		(ch[MonsterIndex]->Attack) += Attack_Random;
+		(ch[MonsterIndex]->HP) += HP_Random;
+		(ch[MonsterIndex]->EXP) = 0;
+		(ch[MonsterIndex]->EXP) += Return_Exp;
+	}
+
+	ch[MonsterIndex]->HP = ch[MonsterIndex]->MAX_HP;
+	ch[PLAYERINDEX]->HP = ch[PLAYERINDEX]->MAX_HP;
+}
+
+
+
+void SaveFile(Character* ch[]) //ok
+{
+	int Select;
+	char buf[256];
+	printf("==============save==============\n");
+	for(int i = 1; i <= 10; i++)
+	{
+		sprintf(buf, "Savefile%d.txt", i);
+		FILE* f = fopen(buf, "r");
+		if(f == NULL)
+			printf("%d번 슬롯 : (파일 여부 : X)\n", i);
+		else
+			printf("%d번 슬롯 : (파일 여부 : O)\n", i);
+	}
+
+	printf("================================\n");
+	printf("[ 선택 ] : ");
+	scanf("%d", &Select);
+	printf("선택한 슬롯은 %d입니다.\n", Select);
+
+	sprintf(buf, "Savefile%d.txt", Select); //buf라는 배열에 글자를 저장해두고 글자처럼 이용하면 됌
+	FILE* f = fopen(buf, "w");
+
+	for(int i = 0; i < CharacterCount; i++)
+	{
+		fprintf(f, "%s %d %d %d %d %d %d %d %d\n", ch[i]->Name, ch[i]->Attack, ch[i]->HP,
+			ch[i]->MAX_HP, ch[i]->EXP, ch[i]->MAX_EXP, ch[i]->GET_EXP, ch[i]->Level, ch[i]->FLAG);
+	}
+
+	fclose(f);
+
+	printf("선택한 슬롯에 정보가 저장되었습니다.\n");
+	system("pause");
+}
+
+
+void LoadFile(Character* ch[])
+{
+
+	int Select;
+	char buf[256];
+	printf("==============load==============\n");
+	for(int i = 1; i <= 10; i++)
+	{
+		sprintf(buf, "Savefile%d.txt", i);
+		FILE* f = fopen(buf, "r");
+		if(f == NULL)
+			printf("%d번 슬롯 : (파일 여부 : X)\n", i);
+		else
+			printf("%d번 슬롯 : (파일 여부 : O)\n", i);
+	}
+
+	printf("================================\n");
+	printf("[ 선택 ] : ");
+	scanf("%d", &Select);
+	printf("선택한 슬롯은 %d입니다.\n", Select);
+
+	sprintf(buf, "Savefile%d.txt", Select);
+	FILE* f = fopen(buf, "r");
+	for(int i = 0; i < CharacterCount; i++)
+	{
+		fscanf(f, "%s", ch[i]->Name);
+		fscanf(f, "%d", &ch[i]->Attack);
+		fscanf(f, "%d", &ch[i]->HP);
+		fscanf(f, "%d", &ch[i]->MAX_HP);
+		fscanf(f, "%d", &ch[i]->EXP);
+		fscanf(f, "%d", &ch[i]->MAX_EXP);
+		fscanf(f, "%d", &ch[i]->GET_EXP);
+		fscanf(f, "%d", &ch[i]->Level);
+		fscanf(f, "%d", &ch[i]->FLAG);
+	}
+	fclose(f);
+	printf("선택한 슬롯의 정보가 로드되었습니다.\n");
+	system("pasue");
+}
+
+void LoadCharacterStat(FILE* f, Character* character)
+{
+	fscanf(f, "%d", &character->Attack);
+	fscanf(f, "%d", &character->MAX_HP);
+	fscanf(f, "%d", &character->MAX_EXP);
+	fscanf(f, "%d", &character->GET_EXP);
+	fscanf(f, "%d", &character->Level);
+	fscanf(f, "%d", &character->FLAG);
+}
+
+
+void main()
+{
+	int play = 1; // 종료하기 위한 변수
+	int Select; // 메뉴선택을 받기위한 변수
+
+	Character* Character_List[MAX]; // 캐릭터(혹은 적군) 정보 저장을 위한 리스트 max=10 
+	Character_List[CharacterCount] = (Character*)malloc(sizeof(Character));
+
+	int MonsterCount;
+	FILE* f;
+	f = fopen("Default.txt", "r");
+	if(f == NULL)
+		printf("해당 이름의 파일이 없습니다.");
+	else
+	{
+		LoadCharacterStat(f, Character_List[PLAYERINDEX]);
+		printf("플레이어 이름 입력: ");
+		scanf("%s", Character_List[PLAYERINDEX]->Name);
+		printf("플레이어 이름이 등록 완료되었습니다!\n");
+		system("pause");
+		(Character_List[PLAYERINDEX]->EXP) = 0;
+		(Character_List[PLAYERINDEX]->HP) = (Character_List[PLAYERINDEX]->MAX_HP);
+
+		CharacterCount++;
+
+		fscanf(f, "%d", &MonsterCount);
+
+		for(int j = 1; j < MonsterCount + 1; j++)
+		{
+			if(CharacterCount >= 10)
+			{
+				printf("더이상 캐릭터를 등록할 수 없습니다.\n");
+				CharacterCount = 10;
+				break;
+			}
+			Character_List[CharacterCount] = (Character*)malloc(sizeof(Character));
+			fscanf(f, "%s", &Character_List[j]->Name);
+			LoadCharacterStat(f, Character_List[j]);
+			(Character_List[j]->EXP) = 0;
+			(Character_List[j]->HP) = (Character_List[j]->MAX_HP);
+			CharacterCount++;
+		}
+		fclose(f);
+		printf("default 불러오기가 완료되었습니다.\n");
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	int CurMonsterIndex;
+	while(play) // 무한반복
+	{
+		system("cls"); //화면전체 지움
+		menu(); // 메뉴오픈
+		scanf("%d", &Select);	//메뉴 번호를 입력받음
+
+		switch(Select) // 입력받은 번호를 스위치문의 스위치로 설정
+		{
+			case 1: // 던전 입장
+				system("cls");
+				CurMonsterIndex = MonsterIndex(Character_List);
+				if(CurMonsterIndex != 8)
+					Gameplay(Character_List,CurMonsterIndex);
+				break;
+			case 2: //Player 정보
+				system("cls");
+				Now_Player(Character_List);
+				break;
+			case 3: // Save 
+				system("cls");
+				SaveFile(Character_List);
+				break;
+			case 4: // Load
+				system("cls");
+				LoadFile(Character_List);
+				break;
+			case 5: //종료
+				play = 0; // play를 0으로 설정하여 무한반복을 종료시킴
+				return;
+		}
+	}
+}
