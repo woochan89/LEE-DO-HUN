@@ -774,14 +774,6 @@ void GameSystem::Fight()
 
 GameSystem::~GameSystem()
 {
-	if (cr != NULL)
-	{
-		delete[] cr;
-		cr = NULL;
-	}
-	if (wp != NULL)
-	{
-		delete[] wp;
-		wp = NULL;
-	}
+	//// cr, wp 동적할당해제 된 코드를 지움
+	//// 중복해제때문에 heap영역 오류생긴것
 }
