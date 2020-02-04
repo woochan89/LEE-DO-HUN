@@ -27,6 +27,10 @@ public:
 	{
 		++second;
 	}
+	void operator--()
+	{
+		--second;
+	}
 	void ShowTime()
 	{
 		system("cls");
@@ -60,8 +64,9 @@ void main()
 	while (1)
 	{
 		Sleep(10);
-		++t1;
+		++t2;
 		t1 + t2; // t2는 객체 + 객체의 형태를 위해서 사용함
+		--t2;
 		t1.ShowTime();
 	}
 
