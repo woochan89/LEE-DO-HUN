@@ -35,7 +35,49 @@ void MapDraw::TextDraw(string str, int x, int y)
 	cout << str;
 }
 
+void MapDraw::HeartDraw(int x, int y)
+{
+	gotoxy(x, y);
+	cout << "¢¾";
+}
 
+void MapDraw::EraseHeart(int x, int y)
+{
+	gotoxy(x, y);
+	cout << "                       ";
+}
+
+void MapDraw::LittleBox(int Start_x, int Start_y, int Width, int Height)
+{
+	if (Start_x > Width)
+		Start_x -= Width;
+	for (int y = 0; y < Height; y++)
+	{
+		gotoxy(Start_x, Start_y + y);
+		if (y == 0)
+		{
+			cout << "¦£";
+			for (int x = 1; x < Width - 1; x++)
+				cout << "¦¡";
+			cout << "¦¤";
+		}
+		else if (y == Height - 1)
+		{
+			cout << "¦¦";
+			for (int x = 1; x < Width - 1; x++)
+				cout << "¦¡";
+			cout << "¦¥";
+		}
+		else
+		{
+			cout << "¦¢";
+			for (int x = 1; x < Width - 1; x++)
+				cout << "  ";
+			cout << "¦¢";
+		}
+	}
+	return;
+}
 
 void MapDraw::BoxErase(int Width, int Height)
 {

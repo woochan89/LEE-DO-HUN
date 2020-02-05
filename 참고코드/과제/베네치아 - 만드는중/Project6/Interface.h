@@ -8,7 +8,6 @@ public:
 	Interface();
 
 	void First_Screen();
-	void Life_Show(int num);
 
 	~Interface();
 };

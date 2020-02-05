@@ -1,9 +1,10 @@
 #include "Mecro.h"
-#include "Interface.h"
+#include "play.h"
 
 void main()
 {
-	Interface test; // 나중에 play로 바꾸기
-	test.First_Screen();
+	Play p; // 나중에 play로 바꾸기
+	p.Start();
 
+	_getch();
 }
