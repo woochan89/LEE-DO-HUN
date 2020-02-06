@@ -15,6 +15,8 @@ public:
 	Play();
 
 	void Start();
+	void Game_Start();
+	void Story();
 	~Play();
 };
 

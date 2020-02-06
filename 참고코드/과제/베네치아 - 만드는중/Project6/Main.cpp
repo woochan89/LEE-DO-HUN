@@ -3,7 +3,7 @@
 
 void main()
 {
-	Play p; // 나중에 play로 바꾸기
+	Play p;
 	p.Start();
 
 	_getch();

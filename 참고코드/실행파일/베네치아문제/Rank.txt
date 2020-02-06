@@ -4,3 +4,6 @@ asd 2 1089
 dd 1 0
 sda 1 0
 q 1 0
+wef 1 0
+gfh 1 0
+ok 1 0

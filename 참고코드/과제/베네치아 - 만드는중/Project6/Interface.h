@@ -8,7 +8,7 @@ public:
 	Interface();
 
 	void First_Screen();
-
+	void Game_Screen();
 	~Interface();
 };
 
