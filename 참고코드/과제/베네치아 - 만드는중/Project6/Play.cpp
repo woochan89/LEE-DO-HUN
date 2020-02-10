@@ -37,6 +37,12 @@ void Play::Start()
 {
 	int Select = 0;
 
+	if (w != NULL)
+	{
+		delete[] w;
+	}
+	w = new _Ward[WARD_MAX]; // 미리 공간을 할당해야 Load_Ward 에서 동작이됌
+
 	Load_Ward(w, m_iload_word);	// 단어 불러오기
 	Set_xy(w); // 단어 위치 세팅
 
@@ -202,6 +208,7 @@ void Play::Playing()
 	system("cls");
 	Ui.Game_Screen();
 	Life_Name();
+	Draw_Word(w);
 }
 
 Play::~Play()

@@ -10,18 +10,12 @@ void WardManager::Load_Ward(_Ward *name, int ward_max)
 	ifstream Load;
 	int j = 0;
 
-	if (name != NULL)
-	{
-		delete[] name;
-	}
-	name = new _Ward[WARD_MAX];
-
 	for (int i = 0; i < WARD_MAX; i++)
 	{
 		name[i].x = NULL;
 		name[i].y = NULL;
 		name[i].name = { "\0" };
-		name[i].status = 1;
+		name[i].status = TRUE;
 	}
 
 	Load.open("Word.txt");
@@ -45,11 +39,50 @@ void WardManager::Load_Ward(_Ward *name, int ward_max)
 
 void WardManager::Set_xy(_Ward *name)
 {
-	for (int i = 0; i < WARD_MAX; i++)
+	int check = FALSE;
+
+	for (int i = 0; i < WARD_MAX;)
 	{
-		name[i].x = ((rand() >= 2) && (rand() <= 63)); // 0,1 제외 65, 64 제외
+		name[i].x = (rand() % 64);
 		name[i].y = 2;
+
+		if (name[i].x >= 2 && name[i].x <= 63) // 0,1 제외 65, 64 제외
+		{
+			i++;
+		}
 	}
+
+}
+
+void WardManager::Draw_Word(_Ward *name)
+{
+	// 살아있는상태인 단어를 랜덤으로 출력
+
+	int i = 0;
+	int old_time = 0;
+	int cur_time = 0;
+
+	old_time = clock();
+
+	while (1)
+	{
+		cur_time = clock();
+
+		if (cur_time - old_time >= 2000)
+		{
+			i = (rand() % 75);
+
+			if (name[i].status == TRUE)
+			{
+				XY.gotoxy(name[i].x, name[i].y);
+				cout << name[i].name;
+
+				old_time = cur_time;
+			}
+		}
+
+	}
+	// 위의 코드는 play로 옮기고, 하나씩 단어 관리하기
 }
 
 WardManager::~WardManager()
