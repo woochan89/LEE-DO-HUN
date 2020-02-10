@@ -6,6 +6,8 @@ Play::Play()
 	m_iScore = 0;
 	m_iName = { "\0" };
 	m_iStage = 1;
+	m_iload_word = 0; // 총 단어 갯수
+	w = NULL; // 단어
 }
 
 void Play::Life_Name()
@@ -35,6 +37,8 @@ void Play::Start()
 {
 	int Select = 0;
 
+	Load_Ward(w, m_iload_word);	// 단어 불러오기
+	Set_xy(w); // 단어 위치 세팅
 
 	Ui.First_Screen();
 	Life_Name();
@@ -202,5 +206,9 @@ void Play::Playing()
 
 Play::~Play()
 {
-
+	if (w != NULL)
+	{
+		delete[] w;
+	}
+	w = NULL;
 }

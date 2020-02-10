@@ -3,6 +3,7 @@
 
 void main()
 {
+	srand(time(NULL)); // ·£´ý¼³Á¤
 	Play p;
 	p.Start();
 

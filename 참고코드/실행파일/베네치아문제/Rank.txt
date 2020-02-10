@@ -17,3 +17,6 @@ sd 1 0
 ss 1 0
 sd 1 0
 nickname 1 0
+ss 1 0
+ff 1 0
+sff 1 0
