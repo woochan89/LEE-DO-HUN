@@ -5,9 +5,13 @@ Play::Play()
 	m_iLife = FULL_HP;
 	m_iScore = 0;
 	m_iName = { "\0" };
+	m_iWord = { "\0" };
+	m_iTmpWord = { "\0" };
 	m_iStage = 1;
 	m_iload_word = 0; // 총 단어 갯수
 	w = NULL; // 단어
+	m_inum = 0;
+	m_iTmp_Iw[INSERT_WORD_MAX] = { '\0' };
 }
 
 void Play::Life_Name()
@@ -147,6 +151,7 @@ void Play::Insert_Name()
 	Ui.Game_Screen();
 	Life_Name();
 
+
 	BLUE
 	Ui.DrawMidText("이름 입력", WIDTH, HEIGHT * 0.75 - 5);
 	Ui.gotoxy(WIDTH, HEIGHT * 0.75);
@@ -162,8 +167,9 @@ void Play::Insert_Name()
 			tmp = { "\0" };
 			for (int i = 0; i < num; i++)
 			{
-			tmp += name_tmp[i];
+				tmp += name_tmp[i];
 			}
+			Ui.DrawMidText("                   ", WIDTH, HEIGHT * 0.75 - 4);
 		}
 
 		else if (name_tmp[8] != NULL)
@@ -185,12 +191,130 @@ void Play::Insert_Name()
 			break;
 		}
 
-		Ui.DrawMidText("                  ", WIDTH, HEIGHT * 0.75);
+		Ui.DrawMidText("                    ", WIDTH, HEIGHT * 0.75);
 		Ui.DrawMidText(tmp, WIDTH, HEIGHT * 0.75);
 	}
 
 	// 영어이외에는 입력안되고 한글은 바로지워짐
 	// 9글자 까지, 입력하는 즉시 텍스트가 중앙에 맞춰짐
+}
+
+void Play::Insert_Word()
+{
+	char ch = 0;
+
+
+	BLUE
+	Ui.gotoxy(WIDTH, HEIGHT * 0.75);
+
+	ch = _getch();
+
+	if (ch == BACK_SPACE && m_inum >= 1)
+	{
+		m_inum--;
+		m_iTmp_Iw[m_inum] = { '\0' };
+		m_iTmpWord = { "\0" };
+		for (int i = 0; i < m_inum; i++)
+		{
+			m_iTmpWord += m_iTmp_Iw[i];
+		}
+		Ui.DrawMidText("                   ", WIDTH, HEIGHT * 0.75 - 4);
+	}
+
+	else if (m_iTmp_Iw[18] != NULL)
+	{
+		Ui.DrawMidText("20글자 초과!!", WIDTH, HEIGHT * 0.75 - 4);
+		_getch();
+	}
+
+	else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+	{
+		m_iTmp_Iw[m_inum] = ch;
+		m_iTmpWord += m_iTmp_Iw[m_inum];
+		m_inum++;
+	}
+
+	else if (ch == ENTER)
+	{
+		m_iWord = m_iTmpWord;
+		m_iTmpWord = { "\0" }; // 다음단어를 위해 초기화
+		m_inum = 0;
+		m_iTmp_Iw[INSERT_WORD_MAX] = { '\0' };
+	}
+
+	Ui.DrawMidText("                    ", WIDTH, HEIGHT * 0.75);
+	Ui.DrawMidText(m_iTmpWord, WIDTH, HEIGHT * 0.75);
+
+}
+
+void Play::Draw_Drop()
+{
+	int printed_word[WARD_MAX] = {'\0'};
+	int word_num = 0;
+	int num = 0;
+
+	int old_time = 0;
+	int cur_time = 0;
+	int move_time = 0;
+
+	move_time = clock();
+	old_time = clock();
+
+	while (word_num != WARD_MAX)
+	{
+		cur_time = clock();
+
+		if (_kbhit())
+		{
+			Insert_Word();
+			Correct_Word();
+			Life_Name(); // 점수 바로 출력
+		}
+
+		if (clock() - move_time >= 500 && word_num != NULL)
+		{
+			for (int i = 0; i < num; i++) // 출력된것은 전부 움직이게 하기
+			{
+				Drop_Word(w, printed_word[i]);
+			}
+			move_time = clock();
+			BLUE
+			Ui.LittleBox(WIDTH, HEIGHT * 0.7, WIDTH * 0.3, HEIGHT * 0.15);
+			if (m_iTmpWord.length() != 0) // 입력창 깜박이는것 방지
+			Ui.DrawMidText(m_iTmpWord, WIDTH, HEIGHT * 0.75);
+		}
+		if (cur_time - old_time >= 2000)
+		{
+			printed_word[num] = Draw_Word(w, printed_word[num]); // 단어 출력
+			word_num++; // 단어 갯수
+			num++;
+			old_time = cur_time;
+		}
+	}
+}
+
+void Play::Correct_Word() // 단어 맞추면 점수가 오른다
+{
+	int num = 0;
+
+	for (int i = 0; i < WARD_MAX; i++)
+	{
+		if (m_iWord == w[i].name)
+		{
+			if (w[i].status == TRUE)
+			{
+				num = w[i].name.length(); // 단어 길이 저장
+
+				Ui.gotoxy(w[i].x, w[i].y);
+				Ui.EraseWord(num);
+				w[i].status = FALSE;
+				m_iScore += 153 * (m_iStage * 0.5);
+				break;
+			}
+		}
+
+		// 잘못입력시 패널티 추가하기
+	}
 }
 
 void Play::Playing()
@@ -208,7 +332,7 @@ void Play::Playing()
 	system("cls");
 	Ui.Game_Screen();
 	Life_Name();
-	Draw_Word(w);
+	Draw_Drop(); //단어 그리고 떨어지는함수
 }
 
 Play::~Play()

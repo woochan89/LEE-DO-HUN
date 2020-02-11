@@ -43,10 +43,10 @@ void WardManager::Set_xy(_Ward *name)
 
 	for (int i = 0; i < WARD_MAX;)
 	{
-		name[i].x = (rand() % 64);
-		name[i].y = 2;
+		name[i].x = (rand() % 119);
+		name[i].y = 1;
 
-		if (name[i].x >= 2 && name[i].x <= 63) // 0,1 제외 65, 64 제외
+		if (name[i].x >= 2 && name[i].x <= 118)
 		{
 			i++;
 		}
@@ -54,35 +54,47 @@ void WardManager::Set_xy(_Ward *name)
 
 }
 
-void WardManager::Draw_Word(_Ward *name)
+int WardManager::Draw_Word(_Ward *name, int i)
 {
 	// 살아있는상태인 단어를 랜덤으로 출력
 
-	int i = 0;
-	int old_time = 0;
-	int cur_time = 0;
 
-	old_time = clock();
+	i = (rand() % 75);
 
-	while (1)
+	if (name[i].status == TRUE)
 	{
-		cur_time = clock();
-
-		if (cur_time - old_time >= 2000)
-		{
-			i = (rand() % 75);
-
-			if (name[i].status == TRUE)
-			{
-				XY.gotoxy(name[i].x, name[i].y);
-				cout << name[i].name;
-
-				old_time = cur_time;
-			}
-		}
-
+		XY.gotoxy(name[i].x, name[i].y);
+		cout << name[i].name;
 	}
-	// 위의 코드는 play로 옮기고, 하나씩 단어 관리하기
+
+	return i;
+
+}
+
+int WardManager::Drop_Word(_Ward *name, int i)
+{
+	int tmp_x = 0;
+	int tmp_y = 0;
+	int num = 0;
+	
+
+	if (name[i].status == TRUE)
+	{
+		num = name[i].name.length(); // 단어 길이 저장
+
+		XY.gotoxy(name[i].x, name[i].y);
+		XY.EraseWord(num);
+		name[i].y++;
+		if (name[i].y == HEIGHT - 1)
+		{
+			name[i].status = FALSE; // 단어 죽음
+			return 0;
+		}
+		XY.gotoxy(name[i].x, name[i].y);
+		BLUE
+		cout << name[i].name;
+	}
+	return 0;
 }
 
 WardManager::~WardManager()

@@ -12,7 +12,8 @@ public:
 	WardManager();
 	void Load_Ward(_Ward *name, int ward_max);
 	void Set_xy(_Ward *name);
-	void Draw_Word(_Ward *name);
+	int Draw_Word(_Ward *name, int i);
+	int Drop_Word(_Ward *name, int i);
 	~WardManager();
 };
 
