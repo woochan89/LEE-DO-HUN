@@ -12,6 +12,7 @@ Play::Play()
 	w = NULL; // 단어
 	m_inum = 0;
 	m_iTmp_Iw[INSERT_WORD_MAX] = { '\0' };
+	m_ipause = FALSE; // 잘못입력시 패널티 부여 변수
 }
 
 void Play::Life_Name()
@@ -203,7 +204,6 @@ void Play::Insert_Word()
 {
 	char ch = 0;
 
-
 	BLUE
 	Ui.gotoxy(WIDTH, HEIGHT * 0.75);
 
@@ -240,11 +240,12 @@ void Play::Insert_Word()
 		m_iTmpWord = { "\0" }; // 다음단어를 위해 초기화
 		m_inum = 0;
 		m_iTmp_Iw[INSERT_WORD_MAX] = { '\0' };
+		Correct_Word();
+		Life_Name(); // 맞출시에 점수 바로 출력
 	}
 
 	Ui.DrawMidText("                    ", WIDTH, HEIGHT * 0.75);
 	Ui.DrawMidText(m_iTmpWord, WIDTH, HEIGHT * 0.75);
-
 }
 
 void Play::Draw_Drop()
@@ -257,18 +258,21 @@ void Play::Draw_Drop()
 	int cur_time = 0;
 	int move_time = 0;
 
+	int pause_old_time = 0;
+	int pause_cur_time = 0;
+
 	move_time = clock();
 	old_time = clock();
+	pause_old_time = clock();
 
 	while (word_num != WARD_MAX)
 	{
 		cur_time = clock();
+		pause_cur_time = clock();
 
-		if (_kbhit())
+		if (_kbhit() && m_ipause == FALSE)
 		{
 			Insert_Word();
-			Correct_Word();
-			Life_Name(); // 점수 바로 출력
 		}
 
 		if (clock() - move_time >= 500 && word_num != NULL)
@@ -290,6 +294,16 @@ void Play::Draw_Drop()
 			num++;
 			old_time = cur_time;
 		}
+
+		if (m_ipause == TRUE) // 패널티 걸렸을시 if문
+		{
+			if (pause_cur_time - pause_old_time >= 7000)
+			{
+				m_ipause = FALSE;
+				pause_old_time = pause_cur_time;
+				// 멈추고 문자입력 진행이되는것 고치기
+			}
+		}
 	}
 }
 
@@ -309,12 +323,11 @@ void Play::Correct_Word() // 단어 맞추면 점수가 오른다
 				Ui.EraseWord(num);
 				w[i].status = FALSE;
 				m_iScore += 153 * (m_iStage * 0.5);
-				break;
+				return;
 			}
-		}
-
-		// 잘못입력시 패널티 추가하기
+		}	
 	}
+	m_ipause = TRUE; // 틀리면 TRUE됌
 }
 
 void Play::Playing()

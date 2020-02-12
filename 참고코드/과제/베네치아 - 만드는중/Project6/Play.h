@@ -16,6 +16,7 @@ private:
 	int m_iStage;
 	int m_iload_word;
 	int m_inum;
+	int m_ipause;
 	char m_iTmp_Iw[INSERT_WORD_MAX];
 	string m_iName;
 	string m_iWord;
